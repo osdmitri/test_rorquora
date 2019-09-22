@@ -1,0 +1,18 @@
+<% content_for :title, "Questions" %>
+
+<h1 class="is-size-3">
+  Newest questions
+  <% if user_signed_in? %>
+    <%= link_to new_question_path, class: "button is-medium" do %>
+      <span class="icon"><%= fa_icon "plus lg" %></span>
+    <% end %>
+  <% end %>
+</h1>
+
+<% @questions.each do |question| %>
+  <h2 class="is-size-5"><%= link_to question.title, question %></h2>
+  <small>
+    asked at <%= question.created_at %> by <%= question.user.email %>
+  </small>
+  <hr>
+<% end %>

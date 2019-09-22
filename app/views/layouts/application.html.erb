@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield :title %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css" />
+  </head>
+
+  <body>
+    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+      <div class="container">
+        <div class="navbar-brand">
+          <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div id="navbar" class="navbar-menu">
+          <div class="navbar-start">
+            <%= link_to "Questions", root_path, class: "navbar-item" %>
+            <%= link_to "Your questions", your_questions_path, class: "navbar-item" %>
+            <%= link_to "Followed questions", followed_questions_path, class: "navbar-item" %>
+          </div>
+
+          <div class="navbar-end">
+            <% if user_signed_in? %>
+              <div class="navbar-item"><%= current_user.email %></div>
+            <% end %>
+            <div class="navbar-item">
+              <div class="buttons">
+                <% if user_signed_in? %>
+                  <%= link_to "Log out", :destroy_user_session, method: :delete, class: "button is-light" %>
+                <% else %>
+                  <%= link_to "Log in", :new_user_session, class: "button is-primary" %>
+                  <%= link_to "Sign up", :new_user_registration, class: "button is-light" %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <% if flash[:notice] %>
+          <div class="notification is-primary">
+            <button class="delete delete-notification"></button>
+            <%= notice %>
+          </div>
+        <% end %>
+        <% if flash[:alert] %>
+          <div class="notification is-danger">
+            <button class="delete delete-notification"></button>
+            <%= alert %>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </section>
+  </body>
+</html>

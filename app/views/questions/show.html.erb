@@ -1,0 +1,68 @@
+<% content_for :title, @question.title %>
+
+<h1 class="is-size-3">
+  <%= @question.title %>
+
+  <% if @question.user == current_user %>
+    <%= link_to edit_question_path(@question), class: "button is-medium" do %>
+      <span class="icon"><%= fa_icon "edit lg" %></span>
+    <% end %>
+
+    <%= link_to question_path(@question), method: :delete, class: "button is-medium" do %>
+      <span class="icon"><%= fa_icon "trash lg" %></span>
+    <% end %>
+  <% end %>
+
+  <% if @followed %>
+    <%= link_to question_unfollow_path(@question), class: "button is-medium" do %>
+      <span class="icon"><%= fa_stacked_icon "times inverse", base: "bookmark" %></span>
+    <% end %>
+  <% else %>
+    <%= link_to question_follow_path(@question), class: "button is-medium" do %>
+      <span class="icon"><%= fa_stacked_icon "plus inverse", base: "bookmark" %></span>
+    <% end %>
+  <% end %>
+
+  <% if @followed_author %>
+    <%= link_to users_unfollow_path(@question.user), class: "button is-medium" do %>
+      <span class="icon"><%= fa_icon "user-times" %></span>
+    <% end %>
+  <% else %>
+    <%= link_to users_follow_path(@question.user), class: "button is-medium" do %>
+      <span class="icon"><%= fa_icon "user-plus" %></span>
+    <% end %>
+  <% end %>
+
+</h1>
+<p style="white-space: pre-line"><%= @question.text %></p>
+<small>
+  asked at <%= @question.created_at %> by <%= @question.user.email %>
+
+</small>
+<hr>
+
+<h1 class="is-size-3">
+  Answers
+</h1>
+
+<% @answers.each do |answer| %>
+  <p style="white-space: pre-line"><%= answer.text %></p>
+  <small>
+    answered at <%= answer.created_at %> by <%= answer.user.email %>
+
+    <% if answer.user == current_user %>
+      <%= link_to edit_answer_path(answer), class: "button is-small" do %>
+        <span class="icon"><%= fa_icon "edit" %></span>
+      <% end %>
+
+      <%= link_to answer_path(answer), method: :delete, class: "button is-small" do %>
+        <span class="icon"><%= fa_icon "trash" %></span>
+      <% end %>
+    <% end %>
+  </small>
+  <hr>
+<% end %>
+
+<% if user_signed_in? %>
+  <%= render "answers/form", {question_id: @question.id } %>
+<% end %>
