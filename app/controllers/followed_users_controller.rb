@@ -8,6 +8,15 @@ class FollowedUsersController < ApplicationController
     redirect_to root_path
   end
 
+  def followed
+    redirect_to :new_user_session && return unless user_signed_in?
+
+    @users = FollowedUser.select(:to_id).where(user: current_user)
+    @questions = Question.where(user: @users)
+
+    render 'questions/index'
+  end
+
   def unfollow
     redirect_to :new_user_session && return unless user_signed_in?
 
